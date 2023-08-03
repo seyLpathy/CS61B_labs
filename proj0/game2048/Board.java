@@ -92,13 +92,13 @@ public class Board implements Iterable<Tile> {
             return false;
         }
         Tile tile1 = vtile(col, row, viewPerspective);
-        values[tile.col()][tile.row()] = null;
+        values[tile.col()][tile.row()] = null; // 移动后当前位置tile变为null
 
         if (tile1 == null) {
-            values[pcol][prow] = tile.move(pcol, prow);
+            values[pcol][prow] = tile.move(pcol, prow);  //目标位置为空的话
             return false;
         } else {
-            values[pcol][prow] = tile.merge(pcol, prow, tile1);
+            values[pcol][prow] = tile.merge(pcol, prow, tile1); //目标位置吸收新的值
             return true;
         }
     }
