@@ -110,11 +110,57 @@ public class Model extends Observable {
         boolean changed;
         changed = false;
         board.setViewingPerspective(side);  //旋转视角至向上
+        for (int i = 0; i < board.size(); i++) {
+	        /* first loop move the null tiles to the bottom as the set view */
+            for (int j = board.size() - 1; j >= 0; j--) {
+                Tile t = board.tile(i, j);
+                int nextPos = board.size() - 1;
+                if (t != null) {
+                    while (nextPos >= j) {
+                        if (board.tile(i, nextPos) == null) {
+                            break;
+                        }
+                        nextPos--;
+                    }
+                    if (nextPos >= j) {
+                        board.move(i, nextPos, t);
+                        changed = true;   //有效移动
+                    }
+                }
+            }
+            /* second loop merge every adjacent tiles with the same values in the set direction */
+            for (int k = board.size() - 1; k >= 0; k--) {
+                Tile T1 = board.tile(i, k);
+                int next = k - 1;
+                if (next<0){
+                    break;
+                }
+                if (T1==null||board.tile(i,next)==null){
+                    break;     // loop over
+                }
+                if (board.tile(i,next).value()==T1.value()){
+                    board.move(i,k,board.tile(i,next));
+                    score+=T1.value()*2;
+                    for (int p = next -1;p>=0;p--){
+                        if (board.tile(i,p)==null){
+                            break;
+                        }
+                        board.move(i,p+1,board.tile(i,p));
+                    }
+                    changed = true;
+
+
+                }
+
+            }
+            //this part works for merge
+
+        }
 
 
 
 
-
+        board.setViewingPerspective(Side.NORTH); //还原视角
         // TODO: Modify this.board (and perhaps this.score) to account
         // for the tilt to the Side SIDE. If the board changed, set the
         // changed local variable to true.

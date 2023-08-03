@@ -85,7 +85,7 @@ public class Board implements Iterable<Tile> {
      *
      * Returns whether or not this move is a merge.
      * */
-    public boolean move(int col, int row, Tile tile) {
+    public boolean move(int col, int row, Tile tile) {  //everytime you can only call move only one time
         int pcol = viewPerspective.col(col, row, size()),
                 prow = viewPerspective.row(col, row, size());
         if (tile.col() == pcol && tile.row() == prow) {
