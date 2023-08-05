@@ -23,5 +23,22 @@ public class TimeAList {
 
     public static void timeAListConstruction() {
         // TODO: YOUR CODE HERE
+        AList <Integer> column1 = new AList<>();
+        AList<Double> column2 = new AList<>();
+        AList<Integer> column3 = new AList<>();
+        int [] numbers ={1000000,2000000,4000000,8000000,16000000,32000000,64000000,128000000};
+        for(int i =0;i<numbers.length;i++){
+            AList <Integer> test = new AList<>();
+            column1.addLast(numbers[i]);
+            column3.addLast(numbers[i]);
+            Stopwatch s = new Stopwatch();
+            while (test.size()<numbers[i]){
+                test.addLast(8);
+            }
+            double timeInSeconds = s.elapsedTime();
+            column2.addLast(timeInSeconds);
+        }
+        printTimingTable(column1,column2,column3);
     }
+
 }
