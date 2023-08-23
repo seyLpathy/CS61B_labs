@@ -1,88 +1,144 @@
 package deque;
 
-public class ArrayDeque<item> {
+import java.util.Iterator;
+
+public class ArrayDeque<item> implements Iterable<item>{
 	private item[] items;
 	private int size;
 	private int nextLast;
 	private int nextFirst;
-	public ArrayDeque(){
+	private void reset(int next,int first){
+		nextLast = next;
+		nextFirst = first;
+	}
+	public ArrayDeque() {
 		items = (item[]) new Object[8];
 		size = 0;
-		nextLast=5;
-		nextFirst=4;
+		reset(4,3);
 	}
-	private void resize(int capacity){
+	private void IncNextLast(){
+		nextLast = (nextLast + 1)% items.length;
+	}
+	private void DecNextLast(){
+		nextLast = (nextLast + items.length -1)% items.length;
+	}
+	private void IncNextFirst(){
+		nextFirst = (nextFirst -1 + items.length)% items.length;
+	}
+	private void DecNextFirst(){
+		nextFirst = (nextFirst + 1)%items.length;
+	}
+	private void checkresize(){
+		if (items.length>=16 && 4*size< items.length){
+			resize(3*size);
+		}
+	}
+	private item getFirst(){return items[getFirstIndex()];}
+	private int getFirstIndex(){return (nextFirst+1)%items.length;}
+	private item getLast(){return items[getLastIndex()];}
+	private int getLastIndex(){return (nextLast-1+ items.length)% items.length;}
+
+	@Override
+	public Iterator<item> iterator(){
+		return new ArrayDequeIterator();
+	}
+	private class ArrayDequeIterator implements Iterator<item>{
+		int wizpos;
+		public ArrayDequeIterator(){
+			wizpos =0;
+		}
+		@Override
+		public boolean hasNext(){
+			return wizpos<size;
+		}
+
+		@Override
+		public item next(){
+			item theNext = get(wizpos);
+			wizpos = wizpos + 1;
+			return theNext;
+		}
+
+	}
+	private void resize(int capacity) {
 		item[] a = (item[]) new Object[capacity];
-		System.arraycopy(items,0,a,size,size);
+		int first = getFirstIndex();
+		int last = getLastIndex();
+		// according to the first and last distribution in the array
+		if (first < last){
+			System.arraycopy(items,0,a,size,size);
+		}
+		else{
+			System.arraycopy(items,first,a,size,items.length-first);
+			System.arraycopy(items,0,a,size+items.length-first,last+1);
+			}
+		reset(size*2,size-1);
 		items = a;
-		nextLast =size()*2 + 1;
-		nextFirst=size() -1;
 	}
-	public int size(){return size;}
-	public void addLast(item x){
-		if (size==items.length){
-			resize(size*3);
+
+
+		 //resizing 过程中改变添加位置
+	public int size() {
+		return size;
+	}
+	public void addLast(item x) {
+		if (size == items.length) {
+			resize(size * 3);
 			//geometrical resizing
 		}
-		items[nextLast]=x;
+		items[nextLast] = x;
 		size = size + 1;
-		if(nextLast+1== items.length){
-			nextLast=0;
-		}
-		else{
-			nextLast=nextLast+1;
-		}
-
+		IncNextLast();
 	}
-	public void addFirst(item x){
-		if(size==items.length) {
+
+	public void addFirst(item x) {
+		if (size == items.length) {
 			resize(size * 3);
 		}
-		items[nextFirst]=x;
+		items[nextFirst] = x;
 		size = size + 1;
-		if (nextFirst==0){
-			nextFirst = items.length -1;
-		}
-		else{
-			nextFirst = nextFirst -1;
-		}
-
+		IncNextFirst();
 
 	}
-	public boolean isEmpty(){
-		return size==0;
+
+	public boolean isEmpty() {
+		return size == 0;
 	}
-	public void printDeque(){
-		for (int i = 0;i<items.length;i++){
-			if (items[i]!=null){
-				System.out.print(items[i]);
-				System.out.print(' ');
-			}
+
+	public void printDeque() {
+		for (int i = 0; i < size(); i++) {
+			System.out.print(get(i));
+			System.out.print(' ');
 		}
 	}
-	public item get(int index){
-		if (index > size){
+	public item get(int index) {
+		if (size()==0){
 			return null;
 		}
-		else {
-			item a =null;
-			for (int j = 0; j <= items.length; j++) {
-				if (items[j] != null) {
-					a = items[j + index];
-					break;
-				}
-			}
-			return a;
-		}
+		int checkIndex = (getFirstIndex()+index)% items.length;
+		return items[checkIndex];
 	}
-	public item removeLast() {
-		if (items.length >= 16 && size < items.length / 4) {
-			resize(size * 4);
+	public item removeFirst(){
+		if (size()==0){
+			return null;
 		}
-		item x = get(nextLast-1);
-		size =size -1;
-		return x;
-//
-//	}
+		checkresize();
+		item Firsted = getFirst();
+		items[getFirstIndex()]=null;
+		DecNextFirst();
+		size = size -1;
+		return Firsted;
 
+	}
+	public item removeLast(){
+		if (size()==0){
+			return null;
+		}
+		checkresize();
+		item Lasted = getLast();
+		items[getLastIndex()]=null;
+		DecNextLast();
+		size = size -1 ;
+		return Lasted;
+	}
 }

@@ -2,7 +2,33 @@ package deque;
 
 import afu.org.checkerframework.checker.oigj.qual.O;
 
-public class LinkedListDeque<item> {
+import java.util.Iterator;
+
+public class LinkedListDeque<item> implements Iterable<item> {
+	@Override
+	public Iterator<item> iterator() {
+		return new LinkedListIterator();
+	}
+	private class LinkedListIterator implements Iterator<item>{
+		private interNode wizpos;
+		public LinkedListIterator(){
+			wizpos = sentinel.next;
+		}
+		@Override
+		public boolean hasNext() {
+			return wizpos!=sentinel;
+		}
+
+		@Override
+		public item next() {
+			if (size()==0){
+				return null;
+			}
+			item returnNext = wizpos.member;
+			wizpos = wizpos.next;
+			return returnNext;
+		}
+	}
 	private class interNode {
 		interNode prev;
 		item member;
@@ -19,7 +45,7 @@ public class LinkedListDeque<item> {
 	int size;
 
 	public LinkedListDeque() {
-		sentinel = new interNode(sentinel, null, sentinel);
+		sentinel = new interNode(null, null, null);
 		size = 0;
 	}
 
@@ -38,7 +64,7 @@ public class LinkedListDeque<item> {
 	public void addLast(item x) {
 		/**    Adds an item of type T to the back of the deque. You can assume that item is never null.*/
 		if (isEmpty()) {
-			sentinel.prev = new interNode(sentinel.prev, x, sentinel);
+			sentinel.prev = new interNode(sentinel, x, sentinel);
 			sentinel.next = sentinel.prev;
 		} else {
 			sentinel.prev.next = new interNode(sentinel.prev, x, sentinel);
@@ -51,7 +77,6 @@ public class LinkedListDeque<item> {
 		/** Returns true if deque is empty, false otherwise.*/
 		return size() == 0;
 	}
-
 	public int size() {
 		/**Returns the number of items in the deque.*/
 		return size;
@@ -59,13 +84,11 @@ public class LinkedListDeque<item> {
 
 	public void printDeque() {
 		/**Prints the items in the deque from first to last, separated by a space. Once all the items have been printed, print out a new line.*/
-		interNode p = sentinel;
-		int t = 0;
-		while (t <= size()) {
+		interNode p = sentinel.next;
+		while (p!=sentinel) {
 			System.out.print(p.member);
 			System.out.print(" ");
 			p = p.next;
-			t = t + 1;
 		}
 		System.out.println();
 
@@ -101,8 +124,8 @@ public class LinkedListDeque<item> {
 	public item get(int index) {
 		/**Gets the item at the given index, where 0 is the front, 1 is the next item, and so forth.
 		 If no such item exists, returns null. Must not alter the deque!*/
-		interNode p = sentinel;
-		if (index > size()) {
+		interNode p = sentinel.next;
+		if (index >= size()) {
 			return null;
 		} else {
 			while (index != 0) {
