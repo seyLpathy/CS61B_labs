@@ -81,11 +81,11 @@ public class ArrayDequeTest {
 	public void timeTest(){
 		ArrayDeque<Integer> sampleTime = new ArrayDeque<>();
 		ArrayDeque<Integer> timescale = new ArrayDeque<>();
+		timescale.addLast(100);
 		timescale.addLast(10000);
 		timescale.addLast(1000000);
-		timescale.addLast(100000000);
-		timescale.addLast(200000000);
-		timescale.addLast(400000000);
+		timescale.addLast(2000000);
+		timescale.addLast(4000000);
 		for (int arraySize:timescale) {
 			int randomVar = StdRandom.uniform(100, 10000);
 			for (int i = 0; i < arraySize; i++) {

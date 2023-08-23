@@ -42,7 +42,7 @@ public class Game {
                     case "New Game":
                         return;
                     case "Up": case "Down": case "Left": case "Right":
-                    case "\u2190": case "\u2191": case "\u2192": case "\u2193":
+                    case "←": case "↑": case "→": case "↓":
                         if (!_model.gameOver() && _model.tilt(keyToSide(cmnd))) {
                             _model.notifyObservers(cmnd);
                             moved = true;

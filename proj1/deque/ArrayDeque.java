@@ -2,7 +2,7 @@ package deque;
 
 import java.util.Iterator;
 
-public class ArrayDeque<item> implements Iterable<item>{
+public class ArrayDeque<item> implements Iterable<item>,Deque<item>{
 	private item[] items;
 	private int size;
 	private int nextLast;
@@ -78,19 +78,22 @@ public class ArrayDeque<item> implements Iterable<item>{
 
 
 		 //resizing 过程中改变添加位置
+	@Override
 	public int size() {
 		return size;
 	}
+
+	@Override
 	public void addLast(item x) {
 		if (size == items.length) {
 			resize(size * 3);
-			//geometrical resizing
 		}
 		items[nextLast] = x;
 		size = size + 1;
 		IncNextLast();
 	}
 
+	@Override
 	public void addFirst(item x) {
 		if (size == items.length) {
 			resize(size * 3);
@@ -98,19 +101,16 @@ public class ArrayDeque<item> implements Iterable<item>{
 		items[nextFirst] = x;
 		size = size + 1;
 		IncNextFirst();
-
 	}
 
-	public boolean isEmpty() {
-		return size == 0;
-	}
-
+	@Override
 	public void printDeque() {
 		for (int i = 0; i < size(); i++) {
 			System.out.print(get(i));
 			System.out.print(' ');
 		}
 	}
+	@Override
 	public item get(int index) {
 		if (size()==0){
 			return null;
@@ -118,6 +118,7 @@ public class ArrayDeque<item> implements Iterable<item>{
 		int checkIndex = (getFirstIndex()+index)% items.length;
 		return items[checkIndex];
 	}
+	@Override
 	public item removeFirst(){
 		if (size()==0){
 			return null;
@@ -130,6 +131,7 @@ public class ArrayDeque<item> implements Iterable<item>{
 		return Firsted;
 
 	}
+	@Override
 	public item removeLast(){
 		if (size()==0){
 			return null;
@@ -140,5 +142,21 @@ public class ArrayDeque<item> implements Iterable<item>{
 		DecNextLast();
 		size = size -1 ;
 		return Lasted;
+	}
+	@Override
+	public boolean equal(Object o){
+		if (o instanceof ArrayDeque){
+			LinkedListDeque<item> p = (LinkedListDeque<item>) o;
+			if (p.size()==size()){
+				for (int i = 0;i<size();i++){
+					if (p.get(i)!=get(i)){
+						return false;
+					}
+				}
+				return true;
+			}
+			return false;
+		}
+		return false;
 	}
 }
