@@ -6,29 +6,7 @@ import edu.princeton.cs.algs4.StdRandom;
 public class ArrayDequeTest {
 	@Test
 	public void rudimentaryTest(){
-		ArrayDeque<Integer> t1 = new ArrayDeque<>();
-		t1.addFirst(1);
-		t1.addFirst(2);
-		t1.addFirst(3);
-		t1.addFirst(4);
-		t1.addFirst(5);
-<<<<<<< HEAD
-		t1.addLast(7);
-		t1.addLast(6);
-		t1.addFirst(23);
-		t1.addLast(34);
-		t1.addFirst(27);
-		t1.addLast(67);
-		t1.printDeque();
-		assertEquals(8,t1.size());
-		assertEquals(27,(int) t1.get(2));
-		/** test about resizing problems*/
-		t1.addLast(100);
-		t1.printDeque();
-		assertEquals(27,(int)t1.removeFirst());
-
-
-=======
+		ArrayDeque<Integer> t1= new ArrayDeque<>();
 		t1.addFirst(6);
 		t1.addFirst(7);
 		t1.addFirst(8);
@@ -36,14 +14,14 @@ public class ArrayDequeTest {
 		t1.printDeque();
 		t1.addLast(10);
 		//t1.printDeque();
-		assertEquals(10,t1.size());
+		assertEquals(5,t1.size());
 		assertFalse(t1.isEmpty());
 		for (int i : t1){
 			System.out.print(i);
 			System.out.print(" ");
 		}
 	}
->>>>>>> 745afa61064d0f316dfd2972d26707131baaf914
+
 
 	@Test
 	public void randomizeTest(){
