@@ -76,7 +76,7 @@ public class LinkedListDequeTest {
     }
 
     @Test
-    /* Check if you can create LinkedListDeques with different parameterized types*/
+    /* Check if you can create LinkedListDeque with different parameterized types*/
     public void multipleParamTest() {
 
         LinkedListDeque<String>  lld1 = new LinkedListDeque<String>();
@@ -125,5 +125,30 @@ public class LinkedListDequeTest {
             assertEquals("Should have the same value", i, (double) lld1.removeLast(), 0.0);
         }
 
+    }
+
+    @Test
+    public void forLoopTest(){
+        LinkedListDeque<Integer> link1 = new LinkedListDeque<>();
+        link1.addFirst(34);
+        link1.addLast(45);
+        link1.addFirst(78);
+        link1.addLast(49);
+        link1.removeLast();
+        link1.removeFirst();
+        assertEquals(2,link1.size());
+        for (int i :link1){
+            System.out.println(i);
+        }
+    }
+
+    @Test
+    public void zeroRemoveTest(){
+        LinkedListDeque<Integer> link2 = new LinkedListDeque<>();
+        link2.addLast(35);
+        link2.removeFirst();
+        link2.addFirst(96);
+        link2.removeLast();
+        assertEquals(0,link2.size());
     }
 }
